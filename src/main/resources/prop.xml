@@ -1,0 +1,10 @@
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>This is a comment</comment>
+    <entry key="propA">Hello</entry>
+    <entry key="propB">やあ</entry>
+    <entry key="propC">مرحبا</entry>
+    <entry key="propD">olá</entry>
+    <entry key="propE">nǐn hǎo</entry>
+    <entry key="propF">Привіт</entry>
+</properties>

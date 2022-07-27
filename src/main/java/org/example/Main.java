@@ -1,6 +1,5 @@
 package org.example;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.includeprop.PropertiesReader;
@@ -28,7 +27,7 @@ public class Main {
     public void writeJObjectToFile(String fileName) {
         List<String> properties = readProperties(fileName);
 
-        String messageData = "Привіт " + properties.get(0);  // build string for answer
+        String messageData = "Hello " + properties.get(0);  // build string for answer
         LOGGER.info("build message to json  =  {}", messageData);
         String usernameData = "Sekator";
         LOGGER.info("build message to json  =  {}", usernameData);
