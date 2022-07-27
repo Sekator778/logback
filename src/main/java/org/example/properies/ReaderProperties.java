@@ -1,4 +1,4 @@
-package org.example;
+package org.example.properies;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,8 +9,7 @@ import java.util.Properties;
 import java.util.Set;
 
 public class ReaderProperties {
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(ReaderProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReaderProperties.class);
     private final Properties configProp = new Properties();
 
     private ReaderProperties() {
@@ -45,10 +44,10 @@ public class ReaderProperties {
         return configProp.containsKey(key);
     }
 
-    public static void main(String[] args) {
-        //Get individual properties
-        System.out.println(ReaderProperties.getInstance().getProperty("data"));
-        //All property names
-        System.out.println(ReaderProperties.getInstance().getAllPropertyNames());
-    }
+//    public static void main(String[] args) {
+//        //Get individual properties
+//        System.out.println(ReaderProperties.getInstance().getProperty("data"));
+//        //All property names
+//        System.out.println(ReaderProperties.getInstance().getAllPropertyNames());
+//    }
 }
