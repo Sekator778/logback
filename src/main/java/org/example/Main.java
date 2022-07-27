@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -18,17 +20,15 @@ import java.util.Properties;
  * Використайте бібліотеку jackson-databind
  */
 public class Main {
-    private static final Logger LOGGER =
-            LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public void writeJObjectToFile(String fileName) throws IOException {
+    /**
+     * write JSObject to file
+     */
+    public void writeJObjectToFile(String fileName) {
+        List<String> properties = readProperties(fileName);
 
-        Properties appProps = new Properties(); // read properties file
-        appProps.load(Files.newInputStream(Paths.get(fileName))); // where external file
-        LOGGER.info("read file {}", fileName);
-        String data = appProps.getProperty("data");  // get specific property
-        LOGGER.info("read specific property data =  {}", data);
-        String messageData = "Привіт " + data;  // build string for answer
+        String messageData = "Привіт " + properties.get(0);  // build string for answer
         LOGGER.info("build message to json  =  {}", messageData);
         String usernameData = "Sekator";
         LOGGER.info("build message to json  =  {}", usernameData);
@@ -38,26 +38,58 @@ public class Main {
         object.put("message", messageData);
         object.put("username", usernameData);
         LOGGER.info("build jsonObject {}", object);
-        String outputFileName = appProps.getProperty("file");  // get specific property
+        String outputFileName = properties.get(1);
         LOGGER.info("file name to save {}", outputFileName);
 
         try {
-            mapper.writeValue(Paths.get(outputFileName).getFileName().toFile(), object); // write json to file
+            mapper.writeValue(Paths.get(outputFileName).toFile(), object); // write json to file
             LOGGER.info("save json to file =  {}", outputFileName);
         } catch (Exception ex) {
             LOGGER.error("IOException {}", ex.getMessage());
         }
     }
 
-    public void readPathToExternalPropertiesFile() throws IOException {
-        PropertiesReader reader = new PropertiesReader("properties-from-pom.properties");
-        String fileName = reader.getProperty("my.external.property");
-        writeJObjectToFile(fileName);
+    /**
+     * read path to file with custom property
+     * field my.external.property in pom.xml
+     */
+    public void readPathToExternalPropertiesFile() {
+        try {
+            PropertiesReader reader = new PropertiesReader("properties-from-pom.properties");
+            String fileName = reader.getProperty("my.external.property");
+            writeJObjectToFile(fileName);
+        } catch (IOException e) {
+            LOGGER.error("IOException when read properties-from-pom.properties");
+        }
+    }
+
+    /**
+     * read property file and fill list
+     *
+     * @param fileName - nameFile
+     * @return list with value of property
+     */
+    private List<String> readProperties(String fileName) {
+        Properties appProps = new Properties(); // read properties file
+        try {
+            LOGGER.info("read file {}", fileName);
+            appProps.load(Files.newInputStream(Paths.get(fileName))); // where external file
+        } catch (IOException e) {
+            LOGGER.error("IOException with file name {}", fileName);
+        }
+        LOGGER.info("read file {}", fileName);
+        List<String> result = new ArrayList<>();
+        result.add(appProps.getProperty("data"));  // get specific property
+        LOGGER.info("read specific property \"data\" =  {}", result.get(0));
+        result.add(appProps.getProperty("file"));  // get specific property
+        LOGGER.info("read specific property \"file\" =  {}", result.get(1));
+
+        return result;
     }
 
 
     /**
-     * точка входу
+     * point for enter
      */
     public static void main(String[] args) throws IOException {
         new Main().readPathToExternalPropertiesFile();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true">
+<configuration debug="false">
 <!--    https://logback.qos.ch/manual/configuration.html#syntax-->
 <!--    <! - Определите адрес хранения файла журнала. Не используйте относительные пути в конфигурации LogBack->-->
     <property name="LOG_HOME" value="target/log" />
