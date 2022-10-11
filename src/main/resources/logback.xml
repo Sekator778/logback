@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false">
 <!--    https://logback.qos.ch/manual/configuration.html#syntax-->
-<!--    <! - Определите адрес хранения файла журнала. Не используйте относительные пути в конфигурации LogBack->-->
+<!--    <! - Specify the storage location for the log file. Do not use relative paths in LogBack configuration->-->
     <property name="LOG_HOME" value="target/log" />
 
-<!--    <! - Консольный вывод->-->
+<!--    <! - Console output->-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-<!--            <! - Форматированный вывод:% d означает дату,% thread означает имя потока,% -5level: уровень отображает 5 символов слева.% Msg: сообщение журнала,% n - разрыв строки->-->
+<!--            <! - Formatted output: %d means date, %thread means thread name, %-5level: level displays 5 characters from the left. %Msg: log message, %n - line break->-->
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
     </appender>
 
-<!--    <! - генерировать файлы журналов каждый день->-->
+<!--    <! - generate log files every day->-->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-<!--            <! - Имя файла выходного файла журнала->-->
+<!--            <! - The file name of the output log file->-->
             <FileNamePattern>${LOG_HOME}/TestWeb.log.%d{yyyy-MM-dd}.log</FileNamePattern>
-<!--            <! - Дни хранения файла журнала->-->
+<!--            <! - Log file storage days->-->
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-<!--            <! - Форматированный вывод:% d означает дату,% thread означает имя потока,% -5level: уровень отображает 5 символов слева.% Msg: сообщение журнала,% n - разрыв строки->-->
+<!--            <! - format output:% d mean date,% thread mean name current thread,% -5level: view 5 symbols left hand.% Msg: message magazine,% n - line break->-->
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
         </encoder>
-<!--        <! - Максимальный размер файла журнала->-->
+<!--        <! - max size magazine logs->-->
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <MaxFileSize>100KB</MaxFileSize>
         </triggeringPolicy>
@@ -35,8 +35,9 @@
     </logger>
 
 
-<!--    <! - Уровень выхода журнала->-->
+<!--    <! - level output magazine->-->
     <root level="info">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
     </root>
 </configuration>

@@ -6,9 +6,14 @@ import org.example.includeprop.PropertiesReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -39,9 +44,11 @@ public class Main {
         LOGGER.info("build jsonObject {}", object);
         String outputFileName = properties.get(1);
         LOGGER.info("file name to save {}", outputFileName);
-
         try {
-            mapper.writeValue(Paths.get(outputFileName).toFile(), object); // write json to file
+            mapper.writeValue(Files.newBufferedWriter(Paths.get(outputFileName),
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.WRITE), object);
             LOGGER.info("save json to file =  {}", outputFileName);
         } catch (Exception ex) {
             LOGGER.error("IOException {}", ex.getMessage());
@@ -71,8 +78,23 @@ public class Main {
     private List<String> readProperties(String fileName) {
         Properties appProps = new Properties(); // read properties file
         try {
-            LOGGER.info("read file {}", fileName);
-            appProps.load(Files.newInputStream(Paths.get(fileName))); // where external file
+            LOGGER.info("read file 1 {}", fileName);
+            Path path = Paths.get(fileName);
+            File file = new File(fileName);
+
+            // file exists and it is not a directory
+            if (file.exists()) {
+                LOGGER.info("File exists! {}", path);
+                BufferedReader reader = new BufferedReader(new FileReader(fileName, StandardCharsets.UTF_8));
+                appProps.load(reader);
+            } else {
+                  file = new File("./app.properties");
+                InputStreamReader in = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+                appProps.load(in);
+                path = Paths.get(fileName);
+                LOGGER.info("File exists! {}", path);
+            }
+
         } catch (IOException e) {
             LOGGER.error("IOException with file name {}", fileName);
         }
@@ -86,11 +108,12 @@ public class Main {
         return result;
     }
 
-
     /**
      * point for enter
      */
     public static void main(String[] args) throws IOException {
+        LOGGER.info("please place file with properties");
+        System.setProperty("file.encoding", "UTF-8");
         new Main().readPathToExternalPropertiesFile();
     }
 }

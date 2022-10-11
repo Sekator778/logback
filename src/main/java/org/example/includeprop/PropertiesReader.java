@@ -1,6 +1,5 @@
 package org.example.includeprop;
 
-import org.example.Logback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * class for check inner file with properties
+ */
 public class PropertiesReader {
     private final Properties properties;
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesReader.class);
